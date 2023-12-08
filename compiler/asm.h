@@ -26,7 +26,17 @@ public:
 
             }
             void operator()(const NodeExprIdent& expr_ident) {
-                //TODO Nodee Identifier
+                // Check if variable exists
+                auto it = gen->m_vars.find(expr_ident.ident.value.value());
+                if (it == gen->m_vars.end()) {
+                    std::cerr << ANSI_BOLD_WHITE << "ent: " << ANSI_BOLD_RED << "fatal error: " << ANSI_RESET_COLOR << "Undeclared identifier: '" << expr_ident.ident.value.value()  << "'" << std::endl;
+                    std::cerr << "compilation terminated." << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+                const auto& var = gen->m_vars.at(expr_ident.ident.value.value());
+                std::stringstream offset;
+                offset << "QWORD [rsp + " << (gen->m_stack_size - var.stack_loc - 1) * 8 << "]\n";
+                gen->push(offset.str());
             }
         };
         ExprVisitor visitor{.gen = this};
@@ -52,9 +62,8 @@ public:
                     std::cerr << "compilation terminated." << std::endl;
                     exit(EXIT_FAILURE);
                 }
-                gen->m_vars.insert({stmt_int.ident.value.value(), Var {.stack_location = gen->m_stack_size}});
+                gen->m_vars.insert({stmt_int.ident.value.value(), Var {.stack_loc = gen->m_stack_size}});
                 gen->gen_expr(stmt_int.expr);
-                
             }
         };
 
@@ -90,12 +99,12 @@ private:
     }
 
     struct Var {
-        size_t stack_location;
+        size_t stack_loc;
     };
 
     const NodeProg m_prog;
     size_t m_stack_size = 0;
     std::stringstream m_output;
-    std::unordered_map<std::string, Var> m_vars;
+    std::unordered_map<std::string, Var> m_vars {};
 
 };

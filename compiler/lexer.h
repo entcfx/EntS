@@ -150,6 +150,21 @@ public:
                 buffer.clear();
                 continue;
             }
+            // Open block { Close block }
+            else if (peak().value() == '{')
+            {
+                consume();
+                tokens.push_back({.type = TokenType::open_block});
+                buffer.clear();
+                continue;
+            }
+            else if (peak().value() == '}')
+            {
+                consume();
+                tokens.push_back({.type = TokenType::close_block});
+                buffer.clear();
+                continue;
+            }
             // Operands + - * /
             //TODO Operands like + 
 

@@ -1,5 +1,3 @@
-// stdio.ent
-
 HEADER {
     function printf(*char string) {} void;
     function strrev(*char string) {} *char rev_string;

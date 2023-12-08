@@ -13,6 +13,8 @@ enum class TokenType {
     semi,
     open_bracket,
     close_bracket,
+    open_block,
+    close_block,
     _int,
     assign,
     _func,
