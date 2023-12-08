@@ -1,0 +1,5 @@
+// stdint.ent
+
+HEADER {
+    typedef bool { 1, 0 };
+}

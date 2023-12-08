@@ -1,8 +1,0 @@
-
-
-main() {
-    int hello = 6;
-    while (hello>0) {
-        hello = hello- -;
-    }
-}
