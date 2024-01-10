@@ -1,5 +1,5 @@
-// stdint.ent
-
 HEADER {
-    typedef bool { 1, 0 };
-}
+    typedef bool int8;
+    #define true 1
+    #define false 0
+};

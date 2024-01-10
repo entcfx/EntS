@@ -1,4 +1,0 @@
-int x = 7;
-int hello = 81;
-int y = 8;
-exit(hello);

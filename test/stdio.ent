@@ -1,41 +1,35 @@
 HEADER {
-    function printf(*char string) {} void;
-    function strrev(*char string) {} *char rev_string;
-}
+    function printf(char string) {} void;
+    function strrev(char string) {} char;
+};
 
-function t() {
-    *char string = 0x0000; // We are defining a character in 0x0000000
-    printf([string]) // We are passing the *char instead of char!
-    char string1 = 'd';
-    int addr = [string1] // Adress, now addr is a pointer.
-    *int addr1 = string // Now addr1 is pointing to "0xd"
-    printf(addr)
-}
+typedef int8 hello;
 
-function strrev(*char string) {
-    int length = 0;
-    while (string != '\0') {
+function strrev(char string) {
+    int16 length = 0;
+
+    while (string[length] != "\0") {
         length++;
-        [string]++;
     };
-    [string] = [string] - length;
-    
-    int start = 0;
-    
+
+    int16 start = 0;
+
+    switch (length) {
+        case 0:
+            return string;
+        case 1:
+            return string;
+        default:
+            break;
+    };
+
+
     while (start < length) {
-        [string] = [string] + start;    
-        char temp = string;
-        [string] = [string] - start;
-        [string] = [string] + length;
-        char temp2 = string;
-        string = temp;
-        [string] = [string] - length;
-
-        [string] = [string] + start;
-        string = temp;
-        [string] = [string] - start;
-
+        char temp = string[start];
+        string[start] = string[length];
+        string[length] = temp;
         start++;
         length--;
     };
-} *char string;
+    return string;
+} char;

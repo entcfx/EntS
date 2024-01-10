@@ -3,14 +3,33 @@
 #include <sstream>
 #include <vector>
 #include <cstdio>
+#include <utility>
+#include <cstdlib>
 #include <algorithm>
 #include "lexer.h"
 #include "token.h"
-#include "asm.h"
 #include "ansi.h"
-#include "parser.h"
+#include "ast.h"
 
 int main(int argc, char* argv[]) {
+    // Variables
+    std::string sourceFile;
+    
+    for (int i = 1; i < argc; ++i) {
+        if (argv[i][0] == '-') {
+            // It's a flag
+        } else {
+            // It's the source file
+            if (sourceFile.empty()) {
+                sourceFile = argv[i];
+            } else {
+                std::cerr << ANSI_BOLD_WHITE << "ent: " << ANSI_BOLD_RED << "fatal error: " << ANSI_RESET_COLOR
+                        << "multiple source files not allowed" << std::endl;
+                std::cerr << "compilation terminated." << std::endl;
+                return EXIT_FAILURE;
+            }
+        }
+    }
 
     // Arguments check
     if (argc < 2) 
@@ -38,27 +57,24 @@ int main(int argc, char* argv[]) {
     {
         std::stringstream contents_stream;
         contents_stream << input.rdbuf();
+        
         contents = contents_stream.str();
     }
 
-    Tokenizer tokenizer_obj(std::move(contents));
-    std::vector<Token> tokens = tokenizer_obj.tokenize();
+    // Tokenization
+    Tokenizer tokenizer = Tokenizer(contents);
+    std::vector<Token> tokens = tokenizer.tokenize();
 
-    // Parser
-    Parser parser(std::move(tokens));
-    std::optional<NodeProg> prog = parser.parse_prog();
-
-    if (!prog.has_value()) {
-        std::cerr << ANSI_BOLD_WHITE << "ent: " << ANSI_BOLD_RED
-        << "fatal error: " << ANSI_RESET_COLOR << "parser error " << std::endl;
-        exit(EXIT_FAILURE);
+    // Print tokens
+    // Loop throught the vector and convert them to stirng using token_to_string(Token token)
+    // And print them
+    for (Token token : tokens) {
+        std::cout << token_to_string(token) << std::endl;
     }
 
-    // Generator
-    Generator generator(prog.value());
-    
-    auto outputFlagPos = std::find(argv, argv + argc, std::string("-o"));
+    // Compile
 
+    auto outputFlagPos = std::find(argv, argv + argc, std::string("-o"));
     if (outputFlagPos != argv + argc && outputFlagPos + 1 != argv + argc) {
         // Found -o flag and there is a path following it
         std::string outputPath = outputFlagPos[1];
@@ -73,8 +89,10 @@ int main(int argc, char* argv[]) {
                         std::cerr << "compilation terminated." << std::endl;
             return EXIT_FAILURE;
         }
-        // Writte the result of tokens_to_asm(tokens); to the file
-        outFile << generator.gen_prog();
+        
+        // WRITTE ASSEMBLY TO outFile:
+        // outFile << 
+
         outFile.close();
 
         std::string nasmCommand = "nasm -felf64 " + asmPath;
@@ -97,7 +115,8 @@ int main(int argc, char* argv[]) {
         std::remove(objPath.c_str());
 
     } else {
-        std::cout << generator.gen_prog();
+        // WRITTE ASSEMBLY TO count:
+        // count << 
     }
     
 

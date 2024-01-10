@@ -1,7 +1,7 @@
 CC = g++
 ASM = nasm
 ROOT = .
-SRC_DIR = $(ROOT)/compiler
+SRC_DIR = $(ROOT)/src
 BUILD_DIR = $(ROOT)/build
 
 # Define ANSI escape codes for colors
