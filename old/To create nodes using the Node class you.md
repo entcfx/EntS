@@ -31,3 +31,4 @@ cpp
     Node nodeWithTypeLeafAndChildren("TypeWithLeafAndChildren",
                                          std::move(childrenWithLeaf), 
                                          std::optional<std::string>("Leaf"));
+typedef oldIdentifier newIdentifier;

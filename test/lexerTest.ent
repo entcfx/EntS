@@ -1,0 +1,96 @@
+// Test basic control structures and type keywords
+HEADER myHeader;
+
+function main() {
+    uint32 count = 10;
+    for (int32 i = 0; i < count; i++) {
+        if (i % 2 == 0) {
+            continue;
+        } else {
+            break;
+        }
+    }
+    return 0;
+}
+
+// This is a single line comment
+/*
+This is a multi-line comment
+covering several lines.
+*/
+function printMessage() {
+    char message[] = "Hello, World!";
+    // Print message to console
+    extern print(message);
+}
+
+function testLiterals() {
+    char escape = '\n'; // Newline character
+    char empty = ''; // Should be treated as 0
+    float pi = 3.14159;
+    uint8 temp = 25;
+}
+
+function calculate() {
+    int32 a = 5;
+    int32 b = a * 2;
+    if (a > b || a <= 10 && b != 20) {
+        a += 1;
+        b -= 1;
+    }
+    return a == b ? a : b;
+}
+
+struct Person {
+    char name[100];
+    uint32 age;
+};
+
+function createPerson() {
+    struct Person p;
+    p.name = "John Doe";
+    p.age = 30;
+    return p;
+}
+
+function nestedLoops() {
+    for (uint32 i = 0; i < 10; i++) {
+        while (i < 5) {
+            if (i == 3) {
+                return i;
+            }
+            i++;
+        }
+    }
+}
+
+/*
+The Code above tested normal functioning of the lexer.
+The Code below are some edge cases that should throw errors.
+-> Comment them out once you test if they throw errors entcfx pls
+*/
+
+
+/*
+function testUnterminatedString() {
+    char message[] = "This string never ends...;
+}
+
+function testInvalidCharLiterals() {
+    char invalid2 = 'ab';
+    char invalid3 = ''';
+}
+function testUnsupportedEscapes() {
+    char unsupportedChar = '\m';
+    char unsupportedString[] = "Invalid \escape sequence";
+}
+
+function testInvalidNumbers() {
+    float invalidFloat = 192.168.1.1;
+}
+
+function testInvalidIdentifiers() {
+    int 1stVariable = 10;
+    float $amount = 99.99;
+}
+*/

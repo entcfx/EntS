@@ -20,6 +20,4 @@ const char ANSI_YELLOW[] = "\033[0;93m";
 const char ANSI_ITALIC_ON[] = "\033[3m";
 const char ANSI_ITALIC_OFF[] = "\033[23m";
 
-[[noreturn]] void errorf(const char* format, ...);
-
 #endif // ANSI_H
